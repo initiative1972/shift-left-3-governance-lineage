@@ -1,0 +1,81 @@
+apiVersion: v3.2.0
+kind: DataContract
+id: governance-customer-360
+name: Customer 360 (customer_360)
+version: 1.0.0
+status: active
+domain: customer
+dataProduct: customer-360
+tenant: portfolio-demo
+
+description:
+  purpose: >-
+    Analytical 360 view combining customer master with transaction behaviour.
+    Intended as a feature source for models.
+  usage: Analytics and model features.
+  limitations: Synthetic demonstration data only.
+
+# ODCS v3.2.0 AI-usage context (stretch): declares how AI/agents may use this
+# dataset. The compliance engine surfaces this alongside the classification so a
+# reviewer can see data-handling intent and AI permissions in one place.
+customProperties:
+  - property: aiUsage
+    value: >-
+      Permitted as feature source for the churn propensity model. PII fields
+      MUST NOT be sent to LLM prompts or external inference endpoints.
+  - property: aiDataZone
+    value: internal-only
+
+schema:
+  - name: customer_360
+    physicalName: customer_360
+    logicalType: object
+    physicalType: table
+    description: One row per customer with spend behaviour.
+    properties:
+      - name: customer_id
+        businessName: Customer ID
+        logicalType: string
+        physicalType: VARCHAR
+        description: Customer identifier.
+        required: true
+        unique: true
+        primaryKey: true
+        classification: internal
+        tags: ['sensitivity:Low']
+
+      # NOTE: full_name and email are present in this dataset but are NOT
+      # classified here. This is a deliberate governance gap — the compliance
+      # engine should DETECT that these fields carry PII (inherited via lineage
+      # from dim_customer) despite having no classification declared.
+      - name: full_name
+        businessName: Full Name
+        logicalType: string
+        physicalType: VARCHAR
+        description: Customer full name.
+        required: true
+
+      - name: email
+        businessName: Email Address
+        logicalType: string
+        physicalType: VARCHAR
+        description: Customer email address.
+        required: true
+
+      - name: total_spend
+        businessName: Total Spend
+        logicalType: number
+        physicalType: DECIMAL(18,2)
+        description: Sum of transaction amounts for the customer, in AUD.
+        required: true
+        classification: internal
+        tags: ['sensitivity:Low']
+
+      - name: txn_count
+        businessName: Transaction Count
+        logicalType: integer
+        physicalType: INTEGER
+        description: Number of transactions for the customer.
+        required: true
+        classification: internal
+        tags: ['sensitivity:Low']

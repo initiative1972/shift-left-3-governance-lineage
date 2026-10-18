@@ -1,0 +1,73 @@
+apiVersion: v3.2.0
+kind: DataContract
+id: governance-dim-customer
+name: Customer Master (dim_customer)
+version: 1.0.0
+status: active
+domain: customer
+dataProduct: customer-master
+tenant: portfolio-demo
+
+description:
+  purpose: >-
+    Governed customer master. This is the authoritative classification point for
+    customer personal information (PII). Downstream datasets that carry these
+    fields inherit their classification and must handle them accordingly.
+  usage: Reference data for analytics and modelling. PII handling rules apply.
+  limitations: Synthetic demonstration data only. No real, customer, or employer data.
+
+# The classification declared here is what the compliance engine treats as the
+# authoritative CPS 234 information-asset classification for these fields.
+schema:
+  - name: dim_customer
+    physicalName: dim_customer
+    logicalType: object
+    physicalType: table
+    description: One row per customer, with classified personal information.
+    properties:
+      - name: customer_id
+        businessName: Customer ID
+        logicalType: string
+        physicalType: VARCHAR
+        description: Surrogate customer identifier.
+        required: true
+        unique: true
+        primaryKey: true
+        classification: internal
+        tags: ['sensitivity:Low']
+
+      - name: full_name
+        businessName: Full Name
+        logicalType: string
+        physicalType: VARCHAR
+        description: Customer full name.
+        required: true
+        classification: PII
+        tags: ['sensitivity:Medium']
+
+      - name: email
+        businessName: Email Address
+        logicalType: string
+        physicalType: VARCHAR
+        description: Customer email address.
+        required: true
+        classification: PII
+        tags: ['sensitivity:High']
+
+      - name: dob
+        businessName: Date of Birth
+        logicalType: date
+        physicalType: DATE
+        description: Customer date of birth.
+        required: true
+        classification: PII
+        tags: ['sensitivity:High']
+
+      - name: tax_file_number
+        businessName: Tax File Number
+        logicalType: string
+        physicalType: VARCHAR
+        description: Australian Tax File Number — highly restricted.
+        required: true
+        classification: PII
+        tags: ['sensitivity:Critical', 'restricted']

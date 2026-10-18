@@ -1,0 +1,59 @@
+apiVersion: v3.2.0
+kind: DataContract
+id: governance-stg-accounts
+name: Accounts (stg_accounts)
+version: 1.0.0
+status: active
+domain: customer
+dataProduct: accounts
+tenant: portfolio-demo
+
+description:
+  purpose: Account reference data linking accounts to customers.
+  usage: Supports transaction attribution and customer aggregation.
+  limitations: Synthetic demonstration data only.
+
+schema:
+  - name: stg_accounts
+    physicalName: stg_accounts
+    logicalType: object
+    physicalType: table
+    description: One row per account.
+    properties:
+      - name: account_id
+        businessName: Account ID
+        logicalType: string
+        physicalType: VARCHAR
+        description: Account identifier.
+        required: true
+        unique: true
+        primaryKey: true
+        classification: internal
+        tags: ['sensitivity:Low']
+
+      - name: customer_id
+        businessName: Customer ID
+        logicalType: string
+        physicalType: VARCHAR
+        description: Owning customer (FK to dim_customer).
+        required: true
+        classification: internal
+        tags: ['sensitivity:Low']
+
+      - name: account_type
+        businessName: Account Type
+        logicalType: string
+        physicalType: VARCHAR
+        description: Account category.
+        required: true
+        classification: internal
+        tags: ['sensitivity:Low']
+
+      - name: opened_date
+        businessName: Opened Date
+        logicalType: date
+        physicalType: DATE
+        description: Date the account was opened.
+        required: true
+        classification: internal
+        tags: ['sensitivity:Low']

@@ -1,0 +1,7 @@
+account_id,customer_id,account_type,opened_date
+ACC-001,CUST-001,transaction,2024-01-15
+ACC-002,CUST-001,savings,2024-01-15
+ACC-003,CUST-002,transaction,2024-02-03
+ACC-004,CUST-003,savings,2023-12-20
+ACC-005,CUST-004,transaction,2024-03-28
+ACC-006,CUST-005,savings,2024-04-15

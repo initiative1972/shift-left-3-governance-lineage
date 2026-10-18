@@ -1,0 +1,68 @@
+apiVersion: v3.2.0
+kind: DataContract
+id: governance-stg-transactions
+name: Transactions (stg_transactions)
+version: 1.0.0
+status: active
+domain: payments
+dataProduct: transactions
+tenant: portfolio-demo
+
+description:
+  purpose: Transaction events used for customer spend aggregation.
+  usage: Feeds fct_transactions and customer_360.
+  limitations: Synthetic demonstration data only.
+
+schema:
+  - name: stg_transactions
+    physicalName: stg_transactions
+    logicalType: object
+    physicalType: table
+    description: One row per transaction.
+    properties:
+      - name: transaction_id
+        businessName: Transaction ID
+        logicalType: string
+        physicalType: VARCHAR
+        description: Transaction identifier.
+        required: true
+        unique: true
+        primaryKey: true
+        classification: internal
+        tags: ['sensitivity:Low']
+
+      - name: account_id
+        businessName: Account ID
+        logicalType: string
+        physicalType: VARCHAR
+        description: Account the transaction belongs to.
+        required: true
+        classification: internal
+        tags: ['sensitivity:Low']
+
+      - name: amount
+        businessName: Amount
+        logicalType: number
+        physicalType: DECIMAL(18,2)
+        description: Transaction amount in AUD.
+        required: true
+        classification: internal
+        tags: ['sensitivity:Low']
+
+      - name: currency
+        businessName: Currency
+        logicalType: string
+        physicalType: VARCHAR
+        description: ISO 4217 currency code.
+        required: true
+        classification: internal
+        tags: ['sensitivity:Low']
+
+      - name: txn_date
+        businessName: Transaction Date
+        logicalType: date
+        physicalType: DATE
+        description: Date the transaction settled.
+        required: true
+        classification: internal
+        tags: ['sensitivity:Low']
